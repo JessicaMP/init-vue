@@ -1,54 +1,37 @@
-const HeaderJs = {
-	data() {
-		return  {
-			title: null
-		}
-	},
-	template: `
-		<div>
-			<center>
-				<h1>To do list</h1>
-			</center>
-			<input type="text" v-model="title" placeholder="Title...">
-		</div>
-	`,
-	updated() {
-		console.log(this.title)
-	}
-}
-
-const app = new Vue({
-	components: {
-		HeaderJs
-	},
+new Vue ({
 	el: '#app',
 	data: {
-		list: [
-			{ text: 'Vue' },
-			{ text: 'React' },
-			{ text: 'Angular' }
-		]
+		newTask: '',
+		tasks: ['Shower', 'Eat', 'Code']
 	},
-	methods:{
-		remove() {
-			console.log(this);
+	methods: {
+		addTask(task) {
+			this.tasks.push(task);
+			this.newTask = '';
+			console.log('ok');
 			
 		},
-
-		edit(){
-
+		removeTask(task) {
+			for(i = 0; i < this.tasks.length; i++) {
+				if (task === this.tasks[i]) {
+					this.tasks.splice(i, 1);
+					console.log('remove');
+					
+				}
+			}
 		}
 	},
 	template: 
-	`<div>
-	<header-js/>
-		<ol>
-			<li v-for="li in list">
-				{{ li.text }}
-				<button v-on:click="remove"></button>
-				<button v-on:click="edit"></button>
-			</li>
-		</ol>
-	</div>`
-})
+		`<div>
+			<h1>To do</h1>
+			<label for="">Title:</label>
+			<input type="text" placeholder="add task" v-model="newTask">
+			<button v-on:click="addTask(newTask)"><i class="fas fa-plus"></i></button>
 
+			<ol>
+				<li v-for="task in tasks">
+					{{ task }}<button v-on:click="removeTask(task)"><i class="fas fa-times" aria-hidden="true"></i></button>
+				</li>
+			</ol>
+		</div>`
+})
